@@ -477,9 +477,7 @@ class Chef
 
       # @return [Array] candidate_version(s) as an array
       def candidate_version_array
-        use_multipackage_api? ?
-          [ candidate_version ].flatten :
-          [ Chef::Decorator::Lazy.new { candidate_version } ]
+        [ candidate_version ].flatten.map { |cv| Chef::Decorator::Lazy.new { cv } }
       end
 
       # @return [Array] current_version(s) as an array
