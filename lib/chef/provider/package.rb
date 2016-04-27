@@ -23,6 +23,7 @@ require "chef/log"
 require "chef/file_cache"
 require "chef/platform"
 require "chef/decorator/lazy"
+require "chef/decorator/lazy_array"
 
 class Chef
   class Provider
@@ -364,7 +365,7 @@ class Chef
               when :upgrade
 
                 if target_version_already_installed?(current_version, new_version) ||
-                    target_version_already_installed?(current_version, candidate_version)
+                   target_version_already_installed?(current_version, candidate_version)
                   Chef::Log.debug("#{new_resource} #{package_name} #{new_version} is already installed")
                   target_version_array.push(nil)
                 elsif candidate_version.nil?
@@ -477,7 +478,11 @@ class Chef
 
       # @return [Array] candidate_version(s) as an array
       def candidate_version_array
-        [ candidate_version ].flatten.map { |cv| Chef::Decorator::Lazy.new { cv } }
+        if use_multipackage_api? || new_resource.version.is_a?(Array)
+          Chef::Decorator::LazyArray.new { candidate_version }
+        else
+          [ Chef::Decorator::Lazy.new { candidate_version } ]
+        end
       end
 
       # @return [Array] current_version(s) as an array
