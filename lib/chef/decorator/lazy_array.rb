@@ -36,7 +36,8 @@ class Chef
     # @since 12.10.x
     class LazyArray < Lazy
       def [](idx)
-        Lazy.new { @block.call[idx] }
+        block = @block
+        Lazy.new { block.call[idx] }
       end
     end
   end
