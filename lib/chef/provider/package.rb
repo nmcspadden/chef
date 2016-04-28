@@ -478,11 +478,7 @@ class Chef
 
       # @return [Array] candidate_version(s) as an array
       def candidate_version_array
-        if use_multipackage_api? || new_resource.version.is_a?(Array)
-          Chef::Decorator::LazyArray.new { [ candidate_version ].flatten }
-        else
-          [ Chef::Decorator::Lazy.new { candidate_version } ]
-        end
+        Chef::Decorator::LazyArray.new { [ candidate_version ].flatten }
       end
 
       # @return [Array] current_version(s) as an array
