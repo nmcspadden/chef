@@ -365,7 +365,7 @@ class Chef
               when :upgrade
 
                 if target_version_already_installed?(current_version, new_version) ||
-                   target_version_already_installed?(current_version, candidate_version)
+                    target_version_already_installed?(current_version, candidate_version)
                   Chef::Log.debug("#{new_resource} #{package_name} #{new_version} is already installed")
                   target_version_array.push(nil)
                 elsif candidate_version.nil?
