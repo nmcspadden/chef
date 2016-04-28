@@ -478,6 +478,8 @@ class Chef
 
       # @return [Array] candidate_version(s) as an array
       def candidate_version_array
+        # NOTE: even with use_multipackage_api candidate_version may be a bare nil and need wrapping
+        # ( looking at you, dpkg provider... )
         Chef::Decorator::LazyArray.new { [ candidate_version ].flatten }
       end
 
